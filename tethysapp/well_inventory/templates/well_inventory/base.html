@@ -15,9 +15,11 @@
 {% block app_navigation_items %}
   {% url 'well_inventory:home' as home_url %}
   {% url 'well_inventory:add_well' as add_well_url %}
+  {% url 'well_inventory:wells' as list_well_url %}
   <li class="title">Navigation</li>
   <li class="{% if request.path == home_url %}active{% endif %}"><a href="{{ home_url }}">Home</a></li>
   <li class="{% if request.path == add_well_url %}active{% endif %}"><a href="{{ add_well_url }}">Add Well</a></li>
+  <li class="{% if request.path == list_well_url %}active{% endif %}"><a href="{{ list_well_url }}">Wells</a></li>
 {% endblock %}
 
 

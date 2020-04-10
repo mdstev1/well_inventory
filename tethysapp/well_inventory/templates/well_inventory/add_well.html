@@ -3,6 +3,18 @@
 
 {% block app_content %}
   <h1>Add Well</h1>
+  <form id="add-well-form" method="post">
+    {% csrf_token %}
+    <div class="form-group{% if location_error %} has-error{% endif %}">
+      <label class="control-label">Location</label>
+      {% gizmo location_input %}
+      {% if location_error %}<p class="help-block">{{ location_error }}</p>{% endif %}
+    </div>
+    {% gizmo name_input %}
+    {% gizmo owner_input %}
+    {% gizmo river_input %}
+    {% gizmo date_built_input %}
+  </form>
 {% endblock %}
 
 {% block app_actions %}
