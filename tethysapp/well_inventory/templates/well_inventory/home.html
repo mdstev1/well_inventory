@@ -1,18 +1,30 @@
 {% extends "well_inventory/base.html" %}
 {% load tethys_gizmos %}
 {% load tethys_gizmos static %}
+{% load tethys_gizmos staticfiles %}
 
 
+{% block import_gizmos %}
+  {% import_gizmo_dependency plotly_view %}
+{% endblock %}
 
 {% block app_content %}
   {% gizmo well_inventory_map %}
+  <div id="popup"></div>
 {% endblock %}
 
 {% block app_actions %}
-  {% gizmo add_well_button %}
+  {% if can_add_wells %}
+    {% gizmo add_well_button %}
+  {% endif %}
 {% endblock %}
 
 {% block styles %}
     {{ block.super }}
     <link href="{% static 'well_inventory/css/map.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script src="{% static 'well_inventory/js/map.js' %}" type="text/javascript"></script>
 {% endblock %}
