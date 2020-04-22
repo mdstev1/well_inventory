@@ -29,9 +29,9 @@ def create_hydrograph(hydrograph_id, height='520px', width='100%'):
     )
     data = [hydrograph_go]
     layout = {
-        'title': 'Hydrograph for {0}'.format(well.name),
+        'title': 'Depth to GW Hydrograph for {0}'.format(well.name),
         'xaxis': {'title': 'Time (hr)'},
-        'yaxis': {'title': 'Flow (cfs)'},
+        'yaxis': {'title': 'Depth to Groundwater (ft)'},
     }
     figure = {'data': data, 'layout': layout}
     hydrograph_plot = PlotlyView(figure, height=height, width=width)

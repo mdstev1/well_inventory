@@ -13,7 +13,7 @@ class WellInventory(TethysAppBase):
     package = 'well_inventory'
     root_url = 'well-inventory'
     color = '#1A5276'
-    description = 'This app provides a groundwater well inventory for water managers on a local level. The app will allow the user to input groundwater well locations into a database that will visualize the locations using an interactive map.'
+    description = 'This app provides a groundwater well inventory and interactive map for local water managers.'
     tags = '"Groundwater","Inventory"'
     enable_feedback = False
     feedback_emails = []
@@ -54,6 +54,11 @@ class WellInventory(TethysAppBase):
                 name='hydrograph_ajax',
                 url='well-inventory/hydrographs/{well_id}/ajax',
                 controller='well_inventory.controllers.hydrograph_ajax'
+            ),
+            UrlMap(
+                name='delete_well',
+                url='well-inventory/delete_well/{well_id}',
+                controller='well_inventory.controllers.delete_well'
             ),
         )
 

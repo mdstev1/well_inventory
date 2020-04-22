@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.utils.html import format_html
 from tethys_sdk.permissions import login_required, permission_required, has_permission
 from tethys_sdk.gizmos import MapView, Button, TextInput, DatePicker, SelectInput, DataTableView, MVDraw, MVView, MVLayer
-from tethys_sdk.workspaces import app_workspace
+
 
 from .model import add_new_well, get_all_wells, assign_hydrograph_to_well, Well, get_hydrograph
 from .app import WellInventory as app
@@ -123,7 +123,7 @@ def add_well(request):
     """
     # Default Values
     name = ''
-    owner = 'Reclamation'
+    owner = 'USGS'
     river = ''
     date_built = ''
     location = ''
@@ -184,13 +184,13 @@ def add_well(request):
         display_text='Owner',
         name='owner',
         multiple=False,
-        options=[('Reclamation', 'Reclamation'), ('Army Corp', 'Army Corp'), ('Other', 'Other')],
+        options=[('USGS', 'USGS'), ('Reclamation', 'Reclamation'), ('Army Corp', 'Army Corp'), ('Other', 'Other')],
         initial=owner,
         error=owner_error
     )
 
     river_input = TextInput(
-        display_text='river',
+        display_text='Aquifer',
         name='river',
         placeholder='e.g.: Colorado Plateaus',
         initial=river,
@@ -269,22 +269,31 @@ def list_wells(request):
 
     for well in wells:
         hydrograph_id = get_hydrograph(well.id)
+        well_id = well.id
         if hydrograph_id:
             url = reverse('well_inventory:hydrograph', kwargs={'hydrograph_id': hydrograph_id})
             well_hydrograph = format_html('<a class="btn btn-primary" href="{}">Hydrograph Plot</a>'.format(url))
         else:
             well_hydrograph = format_html('<a class="btn btn-primary disabled" title="No hydrograph assigned" '
                                          'style="pointer-events: auto;">Hydrograph Plot</a>')
+
+        if well_id == request.user.id:
+            url = reverse('well_inventory:delete_well', kwargs={'well_id': well.id})
+            well_delete = format_html('<a class="btn btn-danger" href="{}">Delete Well</a>'.format(url))
+        else:
+            url = reverse('well_inventory:delete_well', kwargs={'well_id': well.id})
+            well_delete = format_html('<a class="btn btn-danger" href="{}">Delete Well</a>'.format(url))
+
         table_rows.append(
             (
                 well.name, well.owner,
                 well.river, well.date_built,
-                well_hydrograph
+                well_hydrograph, well_delete
             )
         )
 
     wells_table = DataTableView(
-        column_names=('Name', 'Owner', 'River', 'Date Built', 'Hydrograph'),
+        column_names=('Well Number', 'Owner', 'Aquifer', 'Date Built', 'Depth to GW Hydrograph', 'Manage'),
         rows=table_rows,
         searching=False,
         orderClasses=False,
@@ -420,6 +429,24 @@ def hydrograph_ajax(request, well_id):
 
     session.close()
     return render(request, 'well_inventory/hydrograph_ajax.html', context)
+
+@login_required()
+def delete_well(request, well_id):
+    """
+    Controller for the deleting a well.
+    """
+    Session = app.get_persistent_store_database('primary_db', as_sessionmaker=True)
+    session = Session()
+
+    # Delete well object
+    well = session.query(Well).get(int(well_id))
+    session.delete(well)
+    session.commit()
+    session.close()
+
+    messages.success(request, "{} Well has been successfully deleted.".format(well.name))
+
+    return redirect(reverse('well_inventory:wells'))
 
     # save_button = Button(
     #     display_text='',

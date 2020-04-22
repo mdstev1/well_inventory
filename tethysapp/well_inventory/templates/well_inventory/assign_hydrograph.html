@@ -3,7 +3,7 @@
 
 {% block app_content %}
   <h1>Assign Hydrograph</h1>
-  <p>Select a well and a hydrograph file to assign to that well. The file should be a csv with two columns: time (hours) and flow (cfs).</p>
+  <p>Select a well and a hydrograph file to assign to that well. The file should be a csv with two columns: time (hours) and depth to groundwater (ft).</p>
   <form id="add-hydrograph-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% gizmo well_select_input %}
@@ -13,6 +13,7 @@
       {% if hydrograph_file_error %}<p class="help-block">{{ hydrograph_file_error }}</p>{% endif %}
     </div>
   </form>
+  <p>(There are example csv files in the "User Workspace" folder, as well as a list of wells. The hydrograph csv files should be persisted already, so none of the files in this folder are used directly in the app.)</p>
 {% endblock %}
 
 {% block app_actions %}

@@ -53,6 +53,7 @@ $(function() {
                 });
 
                 $(popup_element).popover('show');
+
                 // Load hydrograph dynamically
                 $('#plot-content').load('/apps/well-inventory/hydrographs/' + selected_feature.get('id') + '/ajax/');
             }, 500);

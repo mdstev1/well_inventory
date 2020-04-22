@@ -27,7 +27,7 @@ class Well(Base):
     date_built = Column(String)
 
     # Relationships
-    hydrograph = relationship('Hydrograph', back_populates='well', uselist=False)
+    hydrograph = relationship('Hydrograph', cascade="all,delete", back_populates='well', uselist=False)
 
 class Hydrograph(Base):
     """
@@ -41,7 +41,7 @@ class Hydrograph(Base):
 
     # Relationships
     well = relationship('Well', back_populates='hydrograph')
-    points = relationship('HydrographPoint', back_populates='hydrograph')
+    points = relationship('HydrographPoint', cascade="all,delete", back_populates='hydrograph')
 
 
 class HydrographPoint(Base):
