@@ -156,7 +156,7 @@ def add_well(request):
 
         if not river:
             has_errors = True
-            river_error = 'River is required.'
+            river_error = 'Aquifer is required.'
 
         if not date_built:
             has_errors = True
