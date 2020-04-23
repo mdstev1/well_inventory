@@ -26,11 +26,11 @@ $(function() {
             // Get coordinates of the point to set position of the popup
             var coordinates = selected_feature.getGeometry().getCoordinates();
 
-            var popup_content = '<div class="well-popup">' +
+            var popup_content = '<div class="well-popup">' + '<h6>Well Number:</h6>' +
                                     '<h5>' + selected_feature.get('name') + '</h5>' +
                                     '<h6>Owner:</h6>' +
                                     '<span>' + selected_feature.get('owner') + '</span>' +
-                                    '<h6>River:</h6>' +
+                                    '<h6>Aquifer:</h6>' +
                                     '<span>' + selected_feature.get('river') + '</span>' +
                                     '<h6>Date Built:</h6>' +
                                     '<span>' + selected_feature.get('date_built') + '</span>' +
